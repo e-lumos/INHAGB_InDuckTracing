@@ -124,6 +124,7 @@ void linetrace_val() //입력된 데이터에 따라 모터에 입력될 변수�
     // TODO : LED 수정 아이디어
     led_green();
   }
+  
   else
   {
     m_a_dir = 0;  // 모터A 정방향
