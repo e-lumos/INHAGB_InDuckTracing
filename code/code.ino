@@ -19,8 +19,8 @@
 #define HEAD_ANGLE_MIN 30    // 머리 서보 회전 최소값
 #define HEAD_ANGLE_MAX 150   // 머리 서보 회전 최대값
 
-#define DF_PLAYER_RX 1      // MP3 모듈 RX 핀
-#define DF_PLAYER_TX 2      // MP3 모듈 TX 핀
+#define DF_PLAYER_RX A1      // MP3 모듈 RX 핀
+#define DF_PLAYER_TX A2      // MP3 모듈 TX 핀
 
 #define MP3_DUCK_FORWARD 1  // 전진 시 재생할 MP3 번호
 #define MP3_DUCK_LEFT 2     // 좌회전 시 재생할 MP3 번호
