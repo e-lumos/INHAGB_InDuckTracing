@@ -1,4 +1,4 @@
-#include <Servo.h>
+#include <Servo2.h>
 #include <SoftwareSerial.h>
 #include <DFRobotDFPlayerMini.h>
 

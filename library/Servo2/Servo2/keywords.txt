@@ -1,0 +1,44 @@
+#######################################
+# Syntax Coloring Map Servo
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Servo  KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+attach KEYWORD2
+detach KEYWORD2
+write KEYWORD2
+read KEYWORD2
+attached KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+또한 코드에서 이 라이브러리를 사용한 방법은 다음과 같습니다.
+
+#include <SoftwareSerial.h>
+#include <Servo2.h> // Include the Servo2 library (non standard library since regular servo library conflicted with software serial causing twitching when HM-10 data was sent over serial)
+
+SoftwareSerial HM10(2, 3);
+
+// Variables and objects for servo motor
+int servoPin = 10; // Declare the Servo pin 
+Servo myServo; // Create a servo object. NOTICE IT'S NOT "SERVO2"...which actually would have made more sense!
+
+void setup()
+{
+  Serial.begin(57600);  
+  HM10.begin(57600);  
+  myServo.attach(servoPin); //attaches the servo to the variable servoPin
+}
+
+void loop()
+{
+  (put your own code here. Moving the servo is done the same way as when you use Servo.h instead of Servo2.h)
+}
