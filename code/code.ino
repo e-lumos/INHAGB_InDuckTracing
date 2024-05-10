@@ -1,4 +1,6 @@
 #include <Servo.h>
+#include <SoftwareSerial.h>
+#include <DFRobotDFPlayerMini.h>
 
 #define MOTOR_A_a 3      // 모터 A의 +출력 핀
 #define MOTOR_A_b 11     // 모터 A의 -출력 핀
@@ -17,6 +19,14 @@
 #define HEAD_ANGLE_MIN 30    // 머리 서보 회전 최소값
 #define HEAD_ANGLE_MAX 150   // 머리 서보 회전 최대값
 
+#define DF_PLAYER_RX 1      // MP3 모듈 RX 핀
+#define DF_PLAYER_TX 2      // MP3 모듈 TX 핀
+
+#define MP3_DUCK_FORWARD 1  // 전진 시 재생할 MP3 번호
+#define MP3_DUCK_LEFT 2     // 좌회전 시 재생할 MP3 번호
+#define MP3_DUCK_RIGHT 3    // 우회전 시 재생할 MP3 번호
+#define MP3_DUCK_STOP 4     // 정지 시 재생할 MP3 번호
+
 #define LED_R_PIN 4
 #define LED_G_PIN 13
 #define LED_B_PIN 12
@@ -30,11 +40,17 @@ int tail_servo_angle = 90;              // 꼬리 서보 각도 변수
 Servo head_servo;
 Servo tail_servo;
 
+SoftwareSerial softwareSerial(DF_PLAYER_RX, DF_PLAYER_TX);
+DFRobotDFPlayerMini dfPlayer;
+
 void setup()  
 {
   TCCR1B = TCCR1B & 0b11111000 | 0x05;  //저속주행이 가능하도록 모터A PWM 주파수 변경
   TCCR2B = TCCR2B & 0b11111000 | 0x07;  //저속주행이 가능하도록 모터B PWM 주파수 변경
- 
+  
+  softwareSerial.begin(9600);
+  dfPlayer.volume(20);
+
   // 모터 제어 핀 출력 설정
   pinMode(MOTOR_A_a, OUTPUT);
   pinMode(MOTOR_A_b, OUTPUT);
@@ -93,6 +109,8 @@ void linetrace_val() //입력된 데이터에 따라 모터에 입력될 변수�
       head_servo_angle = constrain(head_servo_angle - SERVO_SPEED, 90, HEAD_ANGLE_MAX);
     }
 
+    dfPlayer.play(MP3_DUCK_FORWARD);
+
     // TODO : LED 수정 아이디어
     led_red();
   }
@@ -106,6 +124,8 @@ void linetrace_val() //입력된 데이터에 따라 모터에 입력될 변수�
 
     tail_servo_angle = constrain(tail_servo_angle + SERVO_SPEED, TAIL_ANGLE_MIN, TAIL_ANGLE_MAX);
     head_servo_angle = constrain(head_servo_angle + SERVO_SPEED, HEAD_ANGLE_MIN, HEAD_ANGLE_MAX);
+
+    dfPlayer.play(MP3_DUCK_LEFT);
 
     // TODO : LED 수정 아이디어
     led_blue();
@@ -121,6 +141,8 @@ void linetrace_val() //입력된 데이터에 따라 모터에 입력될 변수�
     tail_servo_angle = constrain(tail_servo_angle - SERVO_SPEED, TAIL_ANGLE_MIN, TAIL_ANGLE_MAX);
     head_servo_angle = constrain(head_servo_angle - SERVO_SPEED, HEAD_ANGLE_MIN, HEAD_ANGLE_MAX);
 
+    dfPlayer.play(MP3_DUCK_RIGHT);
+
     // TODO : LED 수정 아이디어
     led_green();
   }
@@ -134,6 +156,8 @@ void linetrace_val() //입력된 데이터에 따라 모터에 입력될 변수�
 
     tail_servo_angle = 0;
     head_servo_angle = 0;
+
+    dfPlayer.play(MP3_DUCK_STOP);
 
     // TODO : 정지 시 LED 상태
     led_white();
